@@ -175,14 +175,16 @@ function makeImmutable(obj) {
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
 function makeWord(lettersObject) {
-  // Use Object.entries() to iterate over key-value pairs of the lettersObject
-  return Object.entries(lettersObject).reduce((word, [letter, positions]) => {
-    // Concatenate the letter to the accumulated word for each position
-    positions.forEach(() => {
-      word += letter;
+  const entries = Object.entries(lettersObject);
+  let word = '';
+
+  entries.forEach(([letter, positions]) => {
+    positions.forEach((position) => {
+      word = word.padEnd(position + 1, letter);
     });
-    return word;
-  }, ''); // Initialize word as an empty string
+  });
+
+  return word;
 }
 
 /**
@@ -199,8 +201,42 @@ function makeWord(lettersObject) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let money25 = 0;
+  let money50 = 0;
+
+  return queue.every((bill) => {
+    if (bill === 25) {
+      money25 += 1;
+      return true;
+    }
+
+    if (bill === 50) {
+      if (money25 > 0) {
+        money25 -= 1;
+        money50 += 1;
+        return true;
+      }
+      return false;
+    }
+
+    if (bill === 100) {
+      if (money50 > 0 && money25 > 0) {
+        money50 -= 1;
+        money25 -= 1;
+        return true;
+      }
+
+      if (money25 >= 3) {
+        money25 -= 3;
+        return true;
+      }
+
+      return false;
+    }
+
+    return false; // Default case, in case of unexpected bill
+  });
 }
 
 /**
@@ -216,8 +252,13 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+
+  this.getArea = () => {
+    return this.width * this.height;
+  };
 }
 
 /**
@@ -230,8 +271,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
