@@ -431,32 +431,67 @@ function group(array, keySelector, valueSelector) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return {
+      value,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    return {
+      value: `#${value}`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    return {
+      value: `.${value}`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    return {
+      value: `[${value}]`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    return {
+      value: `:${value}`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    return {
+      value: `::${value}`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    return {
+      value: `${selector1.stringify()} ${combinator} ${selector2.stringify()}`,
+      stringify() {
+        return this.value;
+      },
+    };
   },
 };
 
